@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeterN's Beach Resorts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Color Palette & Variables */
+        :root {
+            --turquoise: #00b4d8;
+            --dark-teal: #0077b6;
+            --sand: #fdfbf7;
+            --coral: #ff7f50;
+            --text-main: #2b2d42;
+            --text-light: #8d99ae;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
+            background-color: var(--sand);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--turquoise), var(--coral));
+            z-index: 1000;
+        }
+
+        /* Navigation - Glassmorphism */
+        .glass-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 100;
+            transition: all 0.4s ease;
+        }
+
+        .glass-nav.scrolled {
+            background: rgba(253, 251, 247, 0.9);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            position: relative;
+        }
+
+        /* Animated Underline */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--coral);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+        }
+
+        .primary-btn {
+            background: var(--coral);
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 127, 80, 0.3);
+        }
+
+        .secondary-btn {
+            background: var(--turquoise);
+            color: white;
+            box-shadow: 0 10px 20px rgba(0, 180, 216, 0.3);
+        }
+
+        .text-btn {
+            padding: 0;
+            color: var(--dark-teal);
+            border-bottom: 1px solid var(--dark-teal);
+            border-radius: 0;
+        }
+
+        /* Hero Section */
+        .fullscreen {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            background: url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 5vw;
+            margin-bottom: 1rem;
+            opacity: 0; 
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            opacity: 0;
+        }
+
+        .hero-wave {
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+        }
+
+        /* Layout Utilities */
+        .section {
+            padding: 8rem 5%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-teal);
+        }
+
+        .bg-light {
+            background-color: #f4f9f9;
+        }
+
+        /* Images & Cards */
+        .rounded-img {
+            width: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        .soft-shadow {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-content h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-teal);
+        }
+
+        .card-content p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* CTA & Footer */
+        .cta-section {
+            background: linear-gradient(135deg, var(--dark-teal), var(--turquoise));
+            color: white;
+        }
+
+        .cta-section .section-title {
+            color: white;
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 4rem 5%;
+        }
+
+        footer p {
+            color: var(--text-light);
+            margin-top: 1rem;
+        }
+
+        /* Animation Initial States */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none; 
+            }
+            .hero-title {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"></div>
+
+    <nav id="navbar" class="glass-nav">
+        <div class="logo">PeterN's</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#rooms">Rooms</a></li>
+            <li><a href="#amenities">Amenities</a></li>
+            <li><a href="#book" class="btn-nav">Book Now</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero fullscreen">
+        <div class="parallax-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">PeterN's Beach Resorts</h1>
+            <p class="hero-subtitle">Where the horizon meets luxury.</p>
+            <a href="#rooms" class="btn primary-btn hero-btn">Explore Paradise</a>
+        </div>
+        <svg class="hero-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#fdfbf7" fill-opacity="1" d="M0,160L48,170.7C96,181,192,203,288,197.3C384,192,480,160,576,160C672,160,768,192,864,197.3C960,203,1056,181,1152,160C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container split-layout">
+            <div class="text-content scroll-reveal">
+                <h2 class="section-title">A Symphony of Sand & Sea</h2>
+                <p>Welcome to PeterN's Beach Resorts, an exclusive sanctuary designed for those who seek the extraordinary. Immerse yourself in our tropical haven where every detail is crafted for your serenity.</p>
+            </div>
+            <div class="image-content scroll-reveal">
+                <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Beautiful Beach House" class="rounded-img soft-shadow">
+            </div>
+        </div>
+    </section>
+
+    <section id="rooms" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title text-center scroll-reveal">Elegant Suites</h2>
+            <div class="grid cards-container">
+                <div class="card scroll-reveal">
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ocean View Suite">
+                    <div class="card-content">
+                        <h3>Ocean View Suite</h3>
+                        <p>Wake up to the sound of crashing waves and panoramic views.</p>
+                        <a href="#" class="btn text-btn">Discover</a>
+                    </div>
+                </div>
+                <div class="card scroll-reveal">
+                    <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Sunset Villa">
+                    <div class="card-content">
+                        <h3>Sunset Villa</h3>
+                        <p>Private pool access with an unobstructed view of the dusk horizon.</p>
+                        <a href="#" class="btn text-btn">Discover</a>
+                    </div>
+                </div>
+                <div class="card scroll-reveal">
+                    <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Coral Penthouse">
+                    <div class="card-content">
+                        <h3>Coral Penthouse</h3>
+                        <p>The pinnacle of luxury with bespoke services and expansive spaces.</p>
+                        <a href="#" class="btn text-btn">Discover</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="book" class="cta-section section">
+        <div class="container text-center scroll-reveal">
+            <h2 class="section-title">Your Escape Awaits</h2>
+            <p>Book your stay at PeterN's Beach Resorts today and step into paradise.</p>
+            <br>
+            <a href="#" class="btn secondary-btn animated-btn">Reserve Your Journey</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container text-center">
+            <h2>PeterN's Beach Resorts</h2>
+            <p>&copy; 2026 PeterN's Beach Resorts. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Initial Hero Timeline (Staggered Entrance)
+            const heroTimeline = anime.timeline({
+                easing: 'easeOutExpo',
+            });
+
+            heroTimeline
+                .add({
+                    targets: '.hero-title',
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                    duration: 1200,
+                    delay: 300
+                })
+                .add({
+                    targets: '.hero-subtitle',
+                    translateY: [30, 0],
+                    opacity: [0, 1],
+                    duration: 1000,
+                }, '-=800')
+                .add({
+                    targets: '.hero-btn',
+                    scale: [0.8, 1],
+                    opacity: [0, 1],
+                    duration: 800,
+                }, '-=600');
+
+            // 2. Mouse Parallax Effect on Hero Background
+            const heroSection = document.querySelector('.hero');
+            const parallaxBg = document.querySelector('.parallax-bg');
+
+            heroSection.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 20; 
+                const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+                anime({
+                    targets: parallaxBg,
+                    translateX: x,
+                    translateY: y,
+                    duration: 100,
+                    easing: 'linear'
+                });
+            });
+
+            // 3. Scroll Reveal Animations (Intersection Observer + Anime.js)
+            const revealElements = document.querySelectorAll('.scroll-reveal');
+
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        anime({
+                            targets: entry.target,
+                            translateY: [50, 0],
+                            opacity: [0, 1],
+                            duration: 1000,
+                            easing: 'easeOutQuad',
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15, 
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // 4. Staggered Cards Animation Specific Logic
+            const cardsObserver = new IntersectionObserver((entries, observer) => {
+                if(entries[0].isIntersecting) {
+                    anime({
+                        targets: '.card',
+                        translateY: [100, 0],
+                        opacity: [0, 1],
+                        delay: anime.stagger(200), 
+                        duration: 1000,
+                        easing: 'easeOutElastic(1, .8)'
+                    });
+                    observer.unobserve(entries[0].target);
+                }
+            }, { threshold: 0.2 });
+
+            const cardsContainer = document.querySelector('.cards-container');
+            if(cardsContainer) {
+                cardsObserver.observe(cardsContainer);
+            }
+
+            // 5. Button Hover Fluid Motion
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    anime({
+                        targets: btn,
+                        scale: 1.05,
+                        duration: 300,
+                        easing: 'easeOutSine'
+                    });
+                });
+                btn.addEventListener('mouseleave', () => {
+                    anime({
+                        targets: btn,
+                        scale: 1,
+                        duration: 300,
+                        easing: 'easeOutSine'
+                    });
+                });
+            });
+
+            // 6. Scroll Progress Bar & Sticky Nav Style
+            const progressBar = document.querySelector('.scroll-progress');
+            const navbar = document.getElementById('navbar');
+
+            window.addEventListener('scroll', () => {
+                const scrollPx = document.documentElement.scrollTop;
+                const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = `${(scrollPx / winHeightPx) * 100}%`;
+                progressBar.style.width = scrolled;
+
+                if (scrollPx > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
