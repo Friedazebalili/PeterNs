@@ -3,247 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeterN's Beach Resorts | Ultra-Luxury Escape</title>
+    <title>PeterN's Beach Estate | Exclusive Coastal Luxury</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --royal-purple: #4c1d95;
-            --soft-orchid: #a855f7;
-            --dusk-bg: #0f0a1a;
+            --deep-ocean: #061121;
+            --tide-blue: #0f2c59;
+            --seafoam: #e2f1f8;
+            --coral-sunset: #ff9e7d;
         }
 
         body {
-            background-color: var(--dusk-bg);
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--deep-ocean);
+            font-family: 'Outfit', sans-serif;
+            color: var(--seafoam);
             cursor: none !important;
-            color: #d1d5db;
+            overflow-x: hidden;
         }
 
-        .serif { font-family: 'Cormorant Garamond', serif; }
+        .serif { font-family: 'Playfair Display', serif; }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0f0a1a; }
-        ::-webkit-scrollbar-thumb { background: #6b21a8; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--deep-ocean); }
+        ::-webkit-scrollbar-thumb { background: var(--tide-blue); border-radius: 10px; }
 
-        /* Unique Logo: The Purple Pearl Shell */
-        .logo-shell {
-            width: 40px;
-            height: 40px;
-            position: relative;
+        /* Glassmorphism */
+        .glass {
+            background: rgba(15, 44, 89, 0.2);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
-        .shell-arc {
+
+        /* Animated Ocean Waves (CSS for continuous fluid motion) */
+        .ocean-waves {
             position: absolute;
-            border: 2px solid var(--soft-orchid);
-            border-radius: 50% 50% 0 0;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: -5px;
+            left: 0;
+            width: 200%;
+            height: 150px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z" fill="%23061121" opacity=".8"/></svg>') repeat-x;
+            background-size: 50% 100%;
+            animation: waveFlow 15s linear infinite;
+            z-index: 10;
         }
-        .arc-1 { width: 100%; height: 100%; opacity: 0.3; animation: pulse 3s infinite; }
-        .arc-2 { width: 70%; height: 70%; opacity: 0.6; animation: pulse 3s infinite 0.5s; }
-        .arc-3 { width: 40%; height: 40%; background: var(--soft-orchid); border: none; border-radius: 50%; bottom: 5px; }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
-            50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
-        }
-
-        /* Glassmorphism Navigation */
-        .glass-nav {
-            background: rgba(15, 10, 26, 0.6);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+        .ocean-waves.layer-2 {
+            bottom: -10px;
+            opacity: 0.5;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z" fill="%230f2c59" opacity=".8"/></svg>') repeat-x;
+            background-size: 50% 100%;
+            animation: waveFlow 20s linear infinite reverse;
+            z-index: 9;
         }
 
-        /* Fullscreen Sections */
-        .fullscreen { min-height: 100vh; display: flex; align-items: center; }
+        @keyframes waveFlow {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
 
         /* Cursor Element */
         #cursor {
-            width: 20px;
-            height: 20px;
-            background: rgba(168, 85, 247, 0.5);
-            box-shadow: 0 0 20px var(--soft-orchid);
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            box-shadow: 0 0 15px 5px rgba(255, 158, 125, 0.4);
             transition: transform 0.1s ease;
         }
 
-        .scroll-reveal { opacity: 0; transform: translateY(30px); }
+        /* Initial Animation States */
+        .scroll-up { opacity: 0; transform: translateY(40px); }
+        .parallax-bg { transform: scale(1.1); transition: transform 0.1s linear; }
 
-        .parallax-wrap { overflow: hidden; position: relative; }
-        .parallax-img { transform: scale(1.2); }
+        /* Review Card Hover */
+        .review-card { transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .review-card:hover { transform: translateY(-10px); border-color: var(--coral-sunset); }
     </style>
 </head>
-<body class="overflow-x-hidden selection:bg-purple-900">
+<body class="selection:bg-tide-blue">
 
     <div id="cursor" class="fixed rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2"></div>
     <canvas id="cursor-trail" class="fixed inset-0 pointer-events-none z-[9998]"></canvas>
 
-    <nav class="fixed top-0 w-full z-50 glass-nav py-6 px-10 flex justify-between items-center">
-        <div class="flex items-center gap-4 group">
-            <div class="logo-shell">
-                <div class="shell-arc arc-1"></div>
-                <div class="shell-arc arc-2"></div>
-                <div class="shell-arc arc-3"></div>
-            </div>
+    <nav class="fixed top-0 w-full z-50 glass py-5 px-6 md:px-12 flex justify-between items-center transition-all duration-300" id="navbar">
+        <div class="flex items-center gap-3">
+            <svg class="w-8 h-8 text-coral-sunset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M2 12h4l3-9 5 18 3-9h5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <div>
-                <h1 class="text-white uppercase tracking-[0.3em] font-light text-lg">PeterN's</h1>
-                <p class="text-[8px] text-purple-400 uppercase tracking-[0.5em] leading-none">Luxury Beach Resorts</p>
+                <h1 class="text-white uppercase tracking-[0.2em] font-medium text-lg leading-none">PeterN's</h1>
+                <p class="text-[9px] text-coral-sunset uppercase tracking-[0.3em] mt-1">Beach Estate</p>
             </div>
         </div>
 
-        <div class="hidden md:flex gap-12 text-[10px] uppercase tracking-[0.3em] font-bold">
-            <a href="#home" class="hover:text-purple-400 transition-colors">Home</a>
-            <a href="#suites" class="hover:text-purple-400 transition-colors">Suites</a>
-            <a href="#experience" class="hover:text-purple-400 transition-colors">Experience</a>
+        <div class="hidden md:flex gap-10 text-[11px] uppercase tracking-widest font-medium">
+            <a href="#estate" class="hover:text-coral-sunset transition-colors">The Estate</a>
+            <a href="#rooms" class="hover:text-coral-sunset transition-colors">The 4 Rooms</a>
+            <a href="#grounds" class="hover:text-coral-sunset transition-colors">Grounds & Events</a>
+            <a href="#reviews" class="hover:text-coral-sunset transition-colors">Guest Book</a>
         </div>
 
-        <a href="#book" class="px-8 py-3 bg-purple-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-purple-500 transition-all">
-            Reserve
+        <a href="#book" class="px-6 py-2.5 border border-coral-sunset text-coral-sunset text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-coral-sunset hover:text-deep-ocean transition-all duration-300">
+            Inquire
         </a>
     </nav>
 
-    <section id="home" class="fullscreen relative px-10 overflow-hidden">
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 z-[-1]">
-            <div class="absolute inset-0 bg-gradient-to-b from-[#0f0a1a]/50 via-transparent to-[#0f0a1a]"></div>
-            <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=2000" 
-                 class="parallax-img w-full h-full object-cover grayscale opacity-40" alt="Dusk Beach">
+            <div class="absolute inset-0 bg-gradient-to-t from-deep-ocean via-deep-ocean/40 to-transparent z-10"></div>
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=2000" 
+                 class="parallax-bg w-full h-full object-cover opacity-60" alt="Ocean Sunset">
         </div>
 
-        <div class="max-w-5xl">
-            <span class="hero-stagger block text-purple-400 text-xs font-bold uppercase tracking-[0.8em] mb-6">Established 2026</span>
-            <h2 class="hero-stagger serif text-7xl md:text-9xl text-white italic leading-tight mb-8">
-                The Violet <br> <span class="not-italic">Sanctuary</span>
+        <div class="relative z-20 text-center px-4 max-w-4xl mt-20">
+            <span class="hero-anim block text-coral-sunset text-xs font-medium uppercase tracking-[0.4em] mb-6">A Private Coastal Haven</span>
+            <h2 class="hero-anim serif text-6xl md:text-8xl text-white mb-6 drop-shadow-2xl">
+                Where the Ocean <br> <span class="italic text-seafoam/80">Meets Home.</span>
             </h2>
-            <p class="hero-stagger text-lg font-light text-gray-400 max-w-xl leading-loose mb-12">
-                Experience PeterN’s exclusive coastal retreat. Where deep purple horizons meet the tranquility of the private shore. 
+            <p class="hero-anim text-lg font-light text-seafoam/70 max-w-2xl mx-auto leading-relaxed mb-10">
+                An exclusive, sprawling beachfront estate featuring four masterfully designed rooms, an al fresco chef's kitchen, and breathtaking grounds tailored for unforgettable weddings.
             </p>
-            <div class="hero-stagger flex gap-6">
-                <button class="px-10 py-5 bg-white text-black text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-purple-400 hover:text-white transition-all">
-                    Explore Suites
-                </button>
-                <div class="flex items-center gap-4 text-white text-[10px] font-bold uppercase tracking-widest">
-                    <span class="w-12 h-[1px] bg-purple-500"></span>
-                    Scroll to Discover
+            <div class="hero-anim">
+                <a href="#estate" class="inline-flex items-center gap-3 text-xs uppercase tracking-widest hover:text-coral-sunset transition-colors">
+                    Explore the Property <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="ocean-waves layer-2"></div>
+        <div class="ocean-waves"></div>
+    </section>
+
+    <section id="estate" class="py-32 px-6 md:px-12 relative">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+            <div class="scroll-up">
+                <span class="text-coral-sunset text-[10px] uppercase tracking-widest font-bold block mb-4">The Grand House</span>
+                <h3 class="serif text-4xl md:text-5xl text-white mb-8 leading-tight">One Magnificent Home. <br> Absolute Privacy.</h3>
+                <p class="font-light text-seafoam/70 leading-relaxed mb-6">
+                    Unlike crowded resorts, PeterN's Estate is designed as a singular, grand beach house. When you book, you aren't just getting a room; you are securing an entire coastal sanctuary for your family or group.
+                </p>
+                <p class="font-light text-seafoam/70 leading-relaxed mb-8">
+                    The house features high vaulted ceilings, panoramic ocean windows, and a seamless indoor-outdoor flow that lets the sea breeze travel through the expansive living areas. 
+                </p>
+                <div class="grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
+                    <div>
+                        <span class="block text-2xl text-white serif">4</span>
+                        <span class="text-[10px] uppercase tracking-widest text-seafoam/50">Luxury Rooms</span>
+                    </div>
+                    <div>
+                        <span class="block text-2xl text-white serif">12</span>
+                        <span class="text-[10px] uppercase tracking-widest text-seafoam/50">Max Guests</span>
+                    </div>
+                    <div>
+                        <span class="block text-2xl text-white serif">50m</span>
+                        <span class="text-[10px] uppercase tracking-widest text-seafoam/50">To the Shore</span>
+                    </div>
                 </div>
+            </div>
+            <div class="relative scroll-up delay-200">
+                <div class="absolute -inset-4 bg-tide-blue/30 blur-2xl rounded-3xl"></div>
+                <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=80&w=1000" alt="The Beach House" class="relative rounded-2xl shadow-2xl border border-white/10 object-cover aspect-[4/3] w-full">
             </div>
         </div>
     </section>
 
-    <section id="suites" class="py-32 px-10">
+    <section id="rooms" class="py-20 px-6 md:px-12 bg-tide-blue/10">
         <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-20">
-                <h3 class="serif text-6xl text-white">The <span class="italic text-purple-400">Suites</span></h3>
-                <p class="text-xs text-gray-500 uppercase tracking-widest">Unrivaled Comfort</p>
+            <div class="text-center mb-20 scroll-up">
+                <span class="text-coral-sunset text-[10px] uppercase tracking-widest font-bold block mb-4">The Quarters</span>
+                <h3 class="serif text-4xl md:text-5xl text-white">Four Master Suites</h3>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="scroll-reveal group">
-                    <div class="overflow-hidden rounded-3xl mb-6 aspect-[4/5] border border-white/5">
-                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=800" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="Ocean Suite">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass rounded-2xl overflow-hidden group scroll-up">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Master Suite">
+                        <div class="absolute inset-0 bg-gradient-to-t from-deep-ocean via-transparent to-transparent"></div>
                     </div>
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="text-xl text-white font-light">The Orchid Villa</h4>
-                            <p class="text-xs text-purple-400 uppercase tracking-widest mt-2">Private Infinity Pool</p>
-                        </div>
-                        <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-purple-400"></i>
+                    <div class="p-8">
+                        <h4 class="serif text-2xl text-white mb-2">The Ocean Master</h4>
+                        <p class="font-light text-sm text-seafoam/70 mb-4">The crown jewel of the house. Features a private wrap-around balcony with 180-degree ocean views and a freestanding soaking tub.</p>
                     </div>
                 </div>
 
-                <div class="scroll-reveal group" style="transition-delay: 200ms;">
-                    <div class="overflow-hidden rounded-3xl mb-6 aspect-[4/5] border border-white/5">
-                        <img src="https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=800" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="Garden Suite">
+                <div class="glass rounded-2xl overflow-hidden group scroll-up" style="transition-delay: 100ms;">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Sunset Room">
+                        <div class="absolute inset-0 bg-gradient-to-t from-deep-ocean via-transparent to-transparent"></div>
                     </div>
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="text-xl text-white font-light">Deep Dusk Suite</h4>
-                            <p class="text-xs text-purple-400 uppercase tracking-widest mt-2">Sunset Lounge Access</p>
-                        </div>
-                        <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-purple-400"></i>
+                    <div class="p-8">
+                        <h4 class="serif text-2xl text-white mb-2">The Coral Room</h4>
+                        <p class="font-light text-sm text-seafoam/70 mb-4">Positioned perfectly to catch the sunset. Includes a private outdoor shower and direct access to the sandy pathways.</p>
                     </div>
                 </div>
 
-                <div class="scroll-reveal group" style="transition-delay: 400ms;">
-                    <div class="overflow-hidden rounded-3xl mb-6 aspect-[4/5] border border-white/5">
-                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="Royal Penthouse">
+                <div class="glass rounded-2xl overflow-hidden group scroll-up" style="transition-delay: 200ms;">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Garden Room">
+                        <div class="absolute inset-0 bg-gradient-to-t from-deep-ocean via-transparent to-transparent"></div>
                     </div>
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="text-xl text-white font-light">Imperial Pearl</h4>
-                            <p class="text-xs text-purple-400 uppercase tracking-widest mt-2">Personalized Butler Service</p>
-                        </div>
-                        <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-purple-400"></i>
+                    <div class="p-8">
+                        <h4 class="serif text-2xl text-white mb-2">The Palm Suite</h4>
+                        <p class="font-light text-sm text-seafoam/70 mb-4">A tranquil retreat facing the lush estate gardens. Features dual vanities, a plush king bed, and shaded terrace.</p>
+                    </div>
+                </div>
+
+                <div class="glass rounded-2xl overflow-hidden group scroll-up" style="transition-delay: 300ms;">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Nautical Room">
+                        <div class="absolute inset-0 bg-gradient-to-t from-deep-ocean via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="serif text-2xl text-white mb-2">The Tide Quarters</h4>
+                        <p class="font-light text-sm text-seafoam/70 mb-4">Cozy and nautical, perfect for younger guests or friends. Features two queen beds and a stunning skylight for stargazing.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-20 border-t border-white/5 px-10">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-            <div class="flex items-center gap-4">
-                <div class="logo-shell scale-75">
-                    <div class="shell-arc arc-1"></div>
-                    <div class="shell-arc arc-3"></div>
+    <section id="grounds" class="py-32 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center mb-32">
+                <div class="order-2 lg:order-1 relative scroll-up">
+                    <img src="https://images.unsplash.com/photo-1596436814324-4d2d415b3cc4?auto=format&fit=crop&q=80&w=1000" alt="Outdoor Kitchen" class="rounded-2xl border border-white/10 shadow-2xl w-full h-[500px] object-cover">
                 </div>
-                <span class="text-white tracking-[0.3em] uppercase">PeterN's Resorts</span>
+                <div class="order-1 lg:order-2 scroll-up">
+                    <i data-lucide="utensils" class="w-10 h-10 text-coral-sunset mb-6"></i>
+                    <h3 class="serif text-4xl text-white mb-6">The Al Fresco <br> Chef's Kitchen</h3>
+                    <p class="font-light text-seafoam/70 leading-relaxed mb-6">
+                        Dining at PeterN's is an open-air experience. The fully equipped outdoor kitchen features a wood-fired pizza oven, a massive grill station, and a bespoke teak dining table that seats 14.
+                    </p>
+                    <p class="font-light text-seafoam/70 leading-relaxed">
+                        Hire our private chef for a local seafood feast, or grill your own catch of the day while listening to the waves crash just yards away.
+                    </p>
+                </div>
             </div>
-            <div class="text-[10px] text-gray-600 uppercase tracking-[0.4em]">
-                © 2026 Crafted for Excellence
+
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="scroll-up">
+                    <i data-lucide="gem" class="w-10 h-10 text-coral-sunset mb-6"></i>
+                    <h3 class="serif text-4xl text-white mb-6">Oceanfront <br> Wedding Receptions</h3>
+                    <p class="font-light text-seafoam/70 leading-relaxed mb-6">
+                        Say "I do" with the ocean as your backdrop. The estate's manicured beachfront lawn transforms into a magical reception area capable of hosting up to 80 guests.
+                    </p>
+                    <p class="font-light text-seafoam/70 leading-relaxed">
+                        String lights dancing in the sea breeze, bespoke floral arrangements, and the grand house serving as home base for the bridal party. It is the intimate, luxury destination wedding you've dreamed of.
+                    </p>
+                    <button class="mt-8 px-6 py-3 border border-seafoam/30 text-xs uppercase tracking-widest hover:bg-white hover:text-deep-ocean transition-all rounded-full">Download Wedding Brochure</button>
+                </div>
+                <div class="relative scroll-up">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=1000" alt="Beach Wedding" class="rounded-2xl border border-white/10 shadow-2xl w-full h-[500px] object-cover">
+                    <div class="absolute -bottom-10 -left-10 bg-deep-ocean border border-white/10 p-6 rounded-2xl shadow-xl hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=300" class="w-48 h-32 object-cover rounded-xl" alt="Wedding Detail">
+                    </div>
+                </div>
             </div>
-            <div class="flex gap-8">
-                <i data-lucide="instagram" class="w-4 h-4 text-gray-400 hover:text-purple-400"></i>
-                <i data-lucide="facebook" class="w-4 h-4 text-gray-400 hover:text-purple-400"></i>
+
+        </div>
+    </section>
+
+    <section id="reviews" class="py-24 px-6 md:px-12 bg-tide-blue/10 border-y border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-up">
+                <i data-lucide="quote" class="w-8 h-8 text-coral-sunset mx-auto mb-4 opacity-50"></i>
+                <h3 class="serif text-4xl text-white">The Guest Book</h3>
             </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass review-card p-8 rounded-2xl scroll-up border border-white/5">
+                    <div class="flex gap-1 text-coral-sunset mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="font-light text-seafoam/80 text-sm leading-relaxed mb-6">"We rented the entire estate for our micro-wedding. Having all 4 rooms for our immediate family and hosting the reception on the lawn was pure magic. The outdoor kitchen was a hit!"</p>
+                    <p class="text-xs font-bold uppercase tracking-widest text-white">— Sarah & Mark T.</p>
+                </div>
+
+                <div class="glass review-card p-8 rounded-2xl scroll-up border border-white/5" style="transition-delay: 100ms;">
+                    <div class="flex gap-1 text-coral-sunset mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="font-light text-seafoam/80 text-sm leading-relaxed mb-6">"The Ocean Master suite is breathtaking. Hearing the waves crash from the balcony at night is something I will never forget. True luxury and absolute privacy."</p>
+                    <p class="text-xs font-bold uppercase tracking-widest text-white">— James L.</p>
+                </div>
+
+                <div class="glass review-card p-8 rounded-2xl scroll-up border border-white/5" style="transition-delay: 200ms;">
+                    <div class="flex gap-1 text-coral-sunset mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="font-light text-seafoam/80 text-sm leading-relaxed mb-6">"A family reunion we will talk about for decades. The layout of the 4 rooms gives everyone their own space, but the massive outdoor areas brought us all together beautifully."</p>
+                    <p class="text-xs font-bold uppercase tracking-widest text-white">— The Elena Family</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-16 px-6 md:px-12 bg-deep-ocean relative overflow-hidden">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-10 items-center relative z-10">
+            <div>
+                <h2 class="text-white uppercase tracking-[0.2em] font-medium text-xl mb-2">PeterN's</h2>
+                <p class="text-seafoam/50 text-sm font-light">Exclusive Coastal Estate</p>
+            </div>
+            
+            <div class="flex gap-8 md:justify-center text-[10px] uppercase tracking-widest font-bold text-seafoam/70">
+                <a href="#" class="hover:text-coral-sunset transition-colors">Instagram</a>
+                <a href="#" class="hover:text-coral-sunset transition-colors">Contact</a>
+                <a href="#" class="hover:text-coral-sunset transition-colors">Location</a>
+            </div>
+            
+            <div class="md:text-right">
+                <p class="text-[10px] text-seafoam/30 uppercase tracking-[0.2em]">© 2026 PeterN's Resorts. All Rights Reserved.</p>
+            </div>
+        </div>
+        
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-bold text-white/[0.02] uppercase tracking-tighter whitespace-nowrap pointer-events-none z-0 serif">
+            Sanctuary
         </div>
     </footer>
 
     <script>
+        // Initialize Icons
         lucide.createIcons();
 
-        // 1. Anime.js Hero Stagger
-        anime({
-            targets: '.hero-stagger',
-            translateY: [50, 0],
-            opacity: [0, 1],
-            delay: anime.stagger(200),
-            duration: 1500,
-            easing: 'easeOutExpo'
+        // 1. Anime.js Initial Stagger for Hero
+        anime.timeline({ easing: 'easeOutExpo' })
+            .add({
+                targets: '.hero-anim',
+                translateY: [40, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(200),
+                duration: 1500,
+                delay: 300
+            });
+
+        // 2. Parallax Image Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const bg = document.querySelector('.parallax-bg');
+            if(bg) {
+                // Subtle scale and translate for water depth feel
+                bg.style.transform = `translateY(${scrolled * 0.3}px) scale(${1.1 + (scrolled * 0.0005)})`;
+            }
         });
 
-        // 2. Custom Cursor Tracking
+        // 3. Intersection Observer for Scroll Reveals
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    anime({
+                        targets: entry.target,
+                        translateY: [40, 0],
+                        opacity: [0, 1],
+                        duration: 1200,
+                        easing: 'easeOutQuart'
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.scroll-up').forEach(el => observer.observe(el));
+
+        // 4. Bioluminescent Cursor Effect (Canvas)
         const cursor = document.getElementById('cursor');
         const canvas = document.getElementById('cursor-trail');
         const ctx = canvas.getContext('2d');
         let particles = [];
 
-        window.addEventListener('resize', () => {
+        function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-        });
-        window.dispatchEvent(new Event('resize'));
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
         window.addEventListener('mousemove', (e) => {
+            // Move custom cursor dot
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
 
+            // Add bioluminescence particles
             for(let i = 0; i < 2; i++) {
                 particles.push({
                     x: e.clientX,
                     y: e.clientY,
-                    size: Math.random() * 2 + 1,
-                    speedX: (Math.random() - 0.5) * 2,
-                    speedY: (Math.random() - 0.5) * 2,
-                    life: 1
+                    size: Math.random() * 2.5 + 0.5,
+                    speedX: (Math.random() - 0.5) * 1.5,
+                    speedY: (Math.random() - 0.5) * 1.5 - 0.5, // Float upwards slightly
+                    life: 1,
+                    color: Math.random() > 0.5 ? 'rgba(226, 241, 248,' : 'rgba(15, 44, 89,' // Seafoam or Tide Blue
                 });
             }
         });
@@ -252,41 +407,25 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < particles.length; i++) {
                 let p = particles[i];
-                ctx.fillStyle = `rgba(168, 85, 247, ${p.life})`;
+                ctx.fillStyle = p.color + p.life + ')';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#e2f1f8';
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fill();
-                p.x += p.speedX; p.y += p.speedY; p.life -= 0.02;
-                if (p.life <= 0) { particles.splice(i, 1); i--; }
+                
+                p.x += p.speedX; 
+                p.y += p.speedY; 
+                p.life -= 0.02; // Fade out speed
+                
+                if (p.life <= 0) { 
+                    particles.splice(i, 1); 
+                    i--; 
+                }
             }
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
-
-        // 3. Scroll Reveal Logic
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    anime({
-                        targets: entry.target,
-                        translateY: [30, 0],
-                        opacity: [0, 1],
-                        duration: 1000,
-                        easing: 'easeOutQuad'
-                    });
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
-
-        // 4. Parallax Background
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.parallax-img');
-            parallax.style.transform = `translateY(${scrolled * 0.4}px) scale(1.2)`;
-        });
     </script>
 </body>
 </html>
