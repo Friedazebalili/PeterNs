@@ -3,284 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AETHER | Elite AI Social Management</title>
+    <title>PeterN's Beach Resorts | Ultra-Luxury Escape</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --accent-purple: #9333ea;
-            --accent-glow: rgba(147, 51, 234, 0.4);
+            --royal-purple: #4c1d95;
+            --soft-orchid: #a855f7;
+            --dusk-bg: #0f0a1a;
         }
 
         body {
-            background-color: #05020a;
+            background-color: var(--dusk-bg);
             font-family: 'Plus Jakarta Sans', sans-serif;
             cursor: none !important;
+            color: #d1d5db;
         }
 
-        .serif-font { font-family: 'Cormorant Garamond', serif; }
+        .serif { font-family: 'Cormorant Garamond', serif; }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #05020a; }
-        ::-webkit-scrollbar-thumb { background: #2e1065; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0f0a1a; }
+        ::-webkit-scrollbar-thumb { background: #6b21a8; border-radius: 10px; }
 
-        /* Glassmorphism Card */
-        .glass-card {
-            background: rgba(15, 10, 30, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Unique Logo: The Purple Pearl Shell */
+        .logo-shell {
+            width: 40px;
+            height: 40px;
+            position: relative;
         }
-        .glass-card:hover {
-            border-color: var(--accent-purple);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(147, 51, 234, 0.15);
+        .shell-arc {
+            position: absolute;
+            border: 2px solid var(--soft-orchid);
+            border-radius: 50% 50% 0 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
         }
+        .arc-1 { width: 100%; height: 100%; opacity: 0.3; animation: pulse 3s infinite; }
+        .arc-2 { width: 70%; height: 70%; opacity: 0.6; animation: pulse 3s infinite 0.5s; }
+        .arc-3 { width: 40%; height: 40%; background: var(--soft-orchid); border: none; border-radius: 50%; bottom: 5px; }
 
-        /* Animated Logo Pulse */
-        @keyframes pulse-ring {
-            0% { transform: scale(0.9); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(0.9); opacity: 0.5; }
-        }
-        .logo-pulse { animation: pulse-ring 3s infinite ease-in-out; }
-
-        /* Unique Logo Shape */
-        .logo-shape {
-            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-            background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%);
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
         }
 
-        #custom-cursor {
-            transition: transform 0.1s ease-out, opacity 0.3s ease;
+        /* Glassmorphism Navigation */
+        .glass-nav {
+            background: rgba(15, 10, 26, 0.6);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
         }
 
-        .gallery-item {
-            transition: all 0.5s ease;
+        /* Fullscreen Sections */
+        .fullscreen { min-height: 100vh; display: flex; align-items: center; }
+
+        /* Cursor Element */
+        #cursor {
+            width: 20px;
+            height: 20px;
+            background: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 20px var(--soft-orchid);
+            transition: transform 0.1s ease;
         }
-        .gallery-item.hidden {
-            display: none;
-            opacity: 0;
-            transform: scale(0.9);
-        }
+
+        .scroll-reveal { opacity: 0; transform: translateY(30px); }
+
+        .parallax-wrap { overflow: hidden; position: relative; }
+        .parallax-img { transform: scale(1.2); }
     </style>
 </head>
-<body class="text-gray-300 antialiased overflow-x-hidden selection:bg-purple-500/40">
+<body class="overflow-x-hidden selection:bg-purple-900">
 
-    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-purple-900/20 rounded-full blur-[150px]"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-900/20 rounded-full blur-[150px]"></div>
-    </div>
+    <div id="cursor" class="fixed rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2"></div>
+    <canvas id="cursor-trail" class="fixed inset-0 pointer-events-none z-[9998]"></canvas>
 
-    <div id="custom-cursor" class="fixed w-4 h-4 bg-purple-500 rounded-full pointer-events-none z-[9999] shadow-[0_0_20px_#a855f7] transform -translate-x-1/2 -translate-y-1/2"></div>
-    <canvas id="cursor-canvas" class="fixed inset-0 pointer-events-none z-[9998]"></canvas>
-
-    <nav class="fixed top-0 inset-x-0 z-50 flex justify-center pt-8 px-4">
-        <div class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl px-10 py-4 flex items-center justify-between w-full max-w-6xl">
-            <a href="#" class="flex items-center gap-4 group">
-                <div class="relative w-10 h-10">
-                    <div class="absolute inset-0 logo-shape opacity-40 blur-md logo-pulse"></div>
-                    <div class="relative w-full h-full logo-shape flex items-center justify-center border border-white/20">
-                         <span class="text-[10px] text-white font-bold">A</span>
-                    </div>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-white font-medium tracking-[0.2em] text-lg uppercase leading-none">Aether</span>
-                    <span class="font-mono text-[8px] text-purple-400 tracking-[0.4em] mt-1 uppercase">Autonomous AI</span>
-                </div>
-            </a>
-
-            <div class="hidden md:flex items-center gap-10 text-sm font-light tracking-widest text-gray-400 uppercase">
-                <a href="#about" class="hover:text-purple-400 transition-colors">Vision</a>
-                <a href="#services" class="hover:text-purple-400 transition-colors">Engine</a>
-                <a href="#portfolio" class="hover:text-purple-400 transition-colors">Portfolio</a>
-                <a href="#pricing" class="hover:text-purple-400 transition-colors">Access</a>
-            </div>
-
-            <a href="#contact" class="hidden md:block bg-white text-black text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full hover:bg-purple-500 hover:text-white transition-all duration-500">
-                Inquire
-            </a>
-        </div>
-    </nav>
-
-    <section class="relative min-h-screen flex items-center justify-center pt-32 pb-20 px-4">
-        <div class="max-w-7xl w-full mx-auto text-center z-10">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/5 mb-8">
-                <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
-                <span class="text-[10px] font-bold tracking-[0.3em] uppercase text-purple-300">New Era of Engagement</span>
-            </div>
-            
-            <h1 class="serif-font text-6xl md:text-9xl text-white leading-tight mb-8">
-                Cultivate <span class="italic text-purple-400">Presence</span> <br>
-                Through Intelligence.
-            </h1>
-            
-            <p class="text-lg md:text-xl text-gray-400 font-light max-w-2xl mx-auto mb-12 leading-relaxed tracking-wide">
-                Bridging the gap between human creativity and autonomous AI systems. Aether designs social ecosystems that grow while you rest.
-            </p>
-            
-            <div class="flex flex-wrap justify-center gap-6">
-                <a href="#portfolio" class="px-10 py-5 bg-purple-600 text-white rounded-full text-xs font-bold uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(147,51,234,0.3)] hover:scale-105 transition-transform">
-                    View Showcase
-                </a>
-                <a href="#contact" class="px-10 py-5 border border-white/20 text-white rounded-full text-xs font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all">
-                    Request Demo
-                </a>
-            </div>
-        </div>
-
-        <div class="absolute inset-0 pointer-events-none opacity-30">
-            <div class="absolute top-[20%] right-[10%] w-32 h-32 border border-purple-500/20 rounded-full animate-bounce" style="animation-duration: 6s;"></div>
-            <div class="absolute bottom-[30%] left-[15%] w-24 h-24 border border-indigo-500/20 rounded-full animate-pulse"></div>
-        </div>
-    </section>
-
-    <section id="about" class="py-32 px-4">
-        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
-            <div class="relative group">
-                <div class="absolute -inset-4 bg-purple-500/10 blur-2xl rounded-[3rem] group-hover:bg-purple-500/20 transition-all"></div>
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200" alt="Abstract Art" class="relative rounded-[2.5rem] border border-white/10 grayscale hover:grayscale-0 transition-all duration-1000">
+    <nav class="fixed top-0 w-full z-50 glass-nav py-6 px-10 flex justify-between items-center">
+        <div class="flex items-center gap-4 group">
+            <div class="logo-shell">
+                <div class="shell-arc arc-1"></div>
+                <div class="shell-arc arc-2"></div>
+                <div class="shell-arc arc-3"></div>
             </div>
             <div>
-                <h2 class="serif-font text-5xl text-white mb-8">3 Years of Data-Driven <br><span class="text-purple-400">Refinement.</span></h2>
-                <p class="text-gray-400 text-lg font-light leading-loose mb-10">
-                    We specialize in the "Unseen Management"—the technical backend, the algorithmic timing, and the automated engagement funnels that turn social profiles into high-conversion assets.
-                </p>
-                <div class="grid grid-cols-2 gap-8">
-                    <div>
-                        <span class="text-3xl text-white block mb-2 font-medium">94%</span>
-                        <span class="text-[10px] uppercase tracking-widest text-purple-400">Retention Rate</span>
-                    </div>
-                    <div>
-                        <span class="text-3xl text-white block mb-2 font-medium">400k+</span>
-                        <span class="text-[10px] uppercase tracking-widest text-purple-400">Audience Growth</span>
-                    </div>
+                <h1 class="text-white uppercase tracking-[0.3em] font-light text-lg">PeterN's</h1>
+                <p class="text-[8px] text-purple-400 uppercase tracking-[0.5em] leading-none">Luxury Beach Resorts</p>
+            </div>
+        </div>
+
+        <div class="hidden md:flex gap-12 text-[10px] uppercase tracking-[0.3em] font-bold">
+            <a href="#home" class="hover:text-purple-400 transition-colors">Home</a>
+            <a href="#suites" class="hover:text-purple-400 transition-colors">Suites</a>
+            <a href="#experience" class="hover:text-purple-400 transition-colors">Experience</a>
+        </div>
+
+        <a href="#book" class="px-8 py-3 bg-purple-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-purple-500 transition-all">
+            Reserve
+        </a>
+    </nav>
+
+    <section id="home" class="fullscreen relative px-10 overflow-hidden">
+        <div class="absolute inset-0 z-[-1]">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#0f0a1a]/50 via-transparent to-[#0f0a1a]"></div>
+            <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=2000" 
+                 class="parallax-img w-full h-full object-cover grayscale opacity-40" alt="Dusk Beach">
+        </div>
+
+        <div class="max-w-5xl">
+            <span class="hero-stagger block text-purple-400 text-xs font-bold uppercase tracking-[0.8em] mb-6">Established 2026</span>
+            <h2 class="hero-stagger serif text-7xl md:text-9xl text-white italic leading-tight mb-8">
+                The Violet <br> <span class="not-italic">Sanctuary</span>
+            </h2>
+            <p class="hero-stagger text-lg font-light text-gray-400 max-w-xl leading-loose mb-12">
+                Experience PeterN’s exclusive coastal retreat. Where deep purple horizons meet the tranquility of the private shore. 
+            </p>
+            <div class="hero-stagger flex gap-6">
+                <button class="px-10 py-5 bg-white text-black text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-purple-400 hover:text-white transition-all">
+                    Explore Suites
+                </button>
+                <div class="flex items-center gap-4 text-white text-[10px] font-bold uppercase tracking-widest">
+                    <span class="w-12 h-[1px] bg-purple-500"></span>
+                    Scroll to Discover
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="services" class="py-32 px-4 bg-white/5">
-        <div class="max-w-6xl mx-auto">
-            <div class="mb-20">
-                <span class="text-[10px] uppercase tracking-[0.5em] text-purple-400 font-bold mb-4 block">The Mechanism</span>
-                <h2 class="serif-font text-5xl text-white">Service Architectures</h2>
+    <section id="suites" class="py-32 px-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-20">
+                <h3 class="serif text-6xl text-white">The <span class="italic text-purple-400">Suites</span></h3>
+                <p class="text-xs text-gray-500 uppercase tracking-widest">Unrivaled Comfort</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="glass-card p-10 rounded-[2rem]">
-                    <i data-lucide="cpu" class="w-10 h-10 text-purple-400 mb-8"></i>
-                    <h3 class="text-xl text-white mb-4 tracking-tight">AI Content Core</h3>
-                    <p class="text-gray-400 font-light leading-relaxed">Generative workflows that produce high-retention visuals and copy perfectly tailored to your brand's voice.</p>
+                <div class="scroll-reveal group">
+                    <div class="overflow-hidden rounded-3xl mb-6 aspect-[4/5] border border-white/5">
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=800" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="Ocean Suite">
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-xl text-white font-light">The Orchid Villa</h4>
+                            <p class="text-xs text-purple-400 uppercase tracking-widest mt-2">Private Infinity Pool</p>
+                        </div>
+                        <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-purple-400"></i>
+                    </div>
                 </div>
-                <div class="glass-card p-10 rounded-[2rem]">
-                    <i data-lucide="layers" class="w-10 h-10 text-purple-400 mb-8"></i>
-                    <h3 class="text-xl text-white mb-4 tracking-tight">Multi-Node Systems</h3>
-                    <p class="text-gray-400 font-light leading-relaxed">Simultaneous syndication across X, Instagram, LinkedIn, and TikTok with platform-specific optimization.</p>
+
+                <div class="scroll-reveal group" style="transition-delay: 200ms;">
+                    <div class="overflow-hidden rounded-3xl mb-6 aspect-[4/5] border border-white/5">
+                        <img src="https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=800" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="Garden Suite">
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-xl text-white font-light">Deep Dusk Suite</h4>
+                            <p class="text-xs text-purple-400 uppercase tracking-widest mt-2">Sunset Lounge Access</p>
+                        </div>
+                        <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-purple-400"></i>
+                    </div>
                 </div>
-                <div class="glass-card p-10 rounded-[2rem]">
-                    <i data-lucide="zap" class="w-10 h-10 text-purple-400 mb-8"></i>
-                    <h3 class="text-xl text-white mb-4 tracking-tight">Rapid Scaling</h3>
-                    <p class="text-gray-400 font-light leading-relaxed">Automated engagement triggers and influencer outreach pipelines to accelerate organic growth.</p>
+
+                <div class="scroll-reveal group" style="transition-delay: 400ms;">
+                    <div class="overflow-hidden rounded-3xl mb-6 aspect-[4/5] border border-white/5">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="Royal Penthouse">
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-xl text-white font-light">Imperial Pearl</h4>
+                            <p class="text-xs text-purple-400 uppercase tracking-widest mt-2">Personalized Butler Service</p>
+                        </div>
+                        <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-purple-400"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="portfolio" class="py-32 px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-                <h2 class="serif-font text-5xl text-white">Visual <span class="italic">Archive</span></h2>
-                <div class="flex gap-4" id="filter-tabs">
-                    <button onclick="filterGallery('all', this)" class="tab-btn px-6 py-2 rounded-full border border-purple-500 bg-purple-500 text-white text-[10px] uppercase tracking-widest font-bold transition-all">All</button>
-                    <button onclick="filterGallery('content', this)" class="tab-btn px-6 py-2 rounded-full border border-white/10 text-gray-500 text-[10px] uppercase tracking-widest font-bold hover:text-white transition-all">Content</button>
-                    <button onclick="filterGallery('logo', this)" class="tab-btn px-6 py-2 rounded-full border border-white/10 text-gray-500 text-[10px] uppercase tracking-widest font-bold hover:text-white transition-all">Brand</button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="gallery-grid">
-                <div class="gallery-item aspect-square rounded-2xl overflow-hidden border border-white/5 group" data-category="content">
-                    <img src="https://raw.githubusercontent.com/Friedazebalili/smm/1f5247630c22afc41d4b281ee3ec55c6e10ae239/images/1.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Work">
-                </div>
-                <div class="gallery-item aspect-square rounded-2xl overflow-hidden border border-white/5 group" data-category="logo">
-                    <img src="https://raw.githubusercontent.com/Friedazebalili/smm/1f5247630c22afc41d4b281ee3ec55c6e10ae239/images/2.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Work">
-                </div>
-                <div class="gallery-item aspect-square rounded-2xl overflow-hidden border border-white/5 group" data-category="content">
-                    <img src="https://raw.githubusercontent.com/Friedazebalili/smm/1f5247630c22afc41d4b281ee3ec55c6e10ae239/images/4.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Work">
-                </div>
-                <div class="gallery-item aspect-square rounded-2xl overflow-hidden border border-white/5 group" data-category="logo">
-                    <img src="https://raw.githubusercontent.com/Friedazebalili/smm/1f5247630c22afc41d4b281ee3ec55c6e10ae239/images/5.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Work">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="py-32 px-4 bg-black">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-20">
-                <h2 class="serif-font text-5xl text-white mb-4">Investment Tiers</h2>
-                <p class="text-gray-500 uppercase tracking-widest text-[10px] font-bold">Scaling Excellence</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="p-12 rounded-[2.5rem] border border-white/5 bg-white/[0.02] flex flex-col items-center text-center">
-                    <span class="text-[10px] uppercase tracking-widest text-gray-500 mb-6">Entry</span>
-                    <h4 class="text-2xl text-white mb-4">Foundation</h4>
-                    <div class="text-4xl text-white font-medium mb-10">$499 <span class="text-sm text-gray-600 font-light">/mo</span></div>
-                    <ul class="space-y-4 mb-12 text-sm text-gray-400 font-light">
-                        <li>Basic AI Content Node</li>
-                        <li>12 Scheduled Postings</li>
-                        <li>Platform Sync (Meta)</li>
-                    </ul>
-                    <a href="#" class="w-full py-4 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">Begin</a>
-                </div>
-
-                <div class="p-12 rounded-[2.5rem] border border-purple-500/40 bg-purple-500/5 flex flex-col items-center text-center relative overflow-hidden">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-purple-500 text-white text-[8px] font-bold uppercase tracking-[0.3em] px-6 py-2 rounded-b-xl">Recommended</div>
-                    <span class="text-[10px] uppercase tracking-widest text-purple-400 mb-6 mt-4">Growth</span>
-                    <h4 class="text-2xl text-white mb-4">Ascension</h4>
-                    <div class="text-4xl text-white font-medium mb-10">$999 <span class="text-sm text-gray-600 font-light">/mo</span></div>
-                    <ul class="space-y-4 mb-12 text-sm text-gray-300 font-light">
-                        <li>Advanced AI Video Creation</li>
-                        <li>Daily Automated Cycles</li>
-                        <li>Cross-Platform Authority</li>
-                    </ul>
-                    <a href="#" class="w-full py-4 bg-purple-600 text-white rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-purple-500/20 hover:scale-105 transition-transform">Accelerate</a>
-                </div>
-
-                <div class="p-12 rounded-[2.5rem] border border-white/5 bg-white/[0.02] flex flex-col items-center text-center">
-                    <span class="text-[10px] uppercase tracking-widest text-gray-500 mb-6">Mastery</span>
-                    <h4 class="text-2xl text-white mb-4">Autonomous</h4>
-                    <div class="text-4xl text-white font-medium mb-10">$1,899 <span class="text-sm text-gray-600 font-light">/mo</span></div>
-                    <ul class="space-y-4 mb-12 text-sm text-gray-400 font-light">
-                        <li>Unlimited Content Cycles</li>
-                        <li>24/7 Response Logic</li>
-                        <li>Influencer AI Network</li>
-                    </ul>
-                    <a href="#" class="w-full py-4 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">Contact Sales</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="py-20 border-t border-white/5 bg-[#05020a]">
-        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-10">
+    <footer class="py-20 border-t border-white/5 px-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
             <div class="flex items-center gap-4">
-                <div class="w-8 h-8 logo-shape"></div>
-                <span class="text-white font-medium tracking-[0.2em] uppercase">Aether</span>
+                <div class="logo-shell scale-75">
+                    <div class="shell-arc arc-1"></div>
+                    <div class="shell-arc arc-3"></div>
+                </div>
+                <span class="text-white tracking-[0.3em] uppercase">PeterN's Resorts</span>
             </div>
-            <div class="flex gap-10 text-[10px] uppercase tracking-[0.3em] font-bold text-gray-500">
-                <a href="#" class="hover:text-white transition-colors">Privacy</a>
-                <a href="#" class="hover:text-white transition-colors">Terms</a>
-                <a href="#" class="hover:text-white transition-colors">System Status</a>
+            <div class="text-[10px] text-gray-600 uppercase tracking-[0.4em]">
+                © 2026 Crafted for Excellence
             </div>
-            <div class="text-[10px] text-gray-600 font-mono">
-                &copy; 2026 AETHER.OPS // ALL RIGHTS RESERVED
+            <div class="flex gap-8">
+                <i data-lucide="instagram" class="w-4 h-4 text-gray-400 hover:text-purple-400"></i>
+                <i data-lucide="facebook" class="w-4 h-4 text-gray-400 hover:text-purple-400"></i>
             </div>
         </div>
     </footer>
@@ -288,12 +210,21 @@
     <script>
         lucide.createIcons();
 
-        // Custom Cursor Logic
-        const cursor = document.getElementById('custom-cursor');
-        const canvas = document.getElementById('cursor-canvas');
+        // 1. Anime.js Hero Stagger
+        anime({
+            targets: '.hero-stagger',
+            translateY: [50, 0],
+            opacity: [0, 1],
+            delay: anime.stagger(200),
+            duration: 1500,
+            easing: 'easeOutExpo'
+        });
+
+        // 2. Custom Cursor Tracking
+        const cursor = document.getElementById('cursor');
+        const canvas = document.getElementById('cursor-trail');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let mouse = { x: -100, y: -100 };
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
@@ -302,19 +233,16 @@
         window.dispatchEvent(new Event('resize'));
 
         window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            cursor.style.left = mouse.x + 'px';
-            cursor.style.top = mouse.y + 'px';
-            
-            // Purple Particle Trail
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+
             for(let i = 0; i < 2; i++) {
                 particles.push({
-                    x: mouse.x,
-                    y: mouse.y,
+                    x: e.clientX,
+                    y: e.clientY,
                     size: Math.random() * 2 + 1,
-                    speedX: (Math.random() - 0.5) * 1,
-                    speedY: (Math.random() - 0.5) * 1,
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: (Math.random() - 0.5) * 2,
                     life: 1
                 });
             }
@@ -335,25 +263,30 @@
         }
         animateParticles();
 
-        // Gallery Filter
-        function filterGallery(category, btn) {
-            const items = document.querySelectorAll('.gallery-item');
-            const btns = document.querySelectorAll('.tab-btn');
-            btns.forEach(b => {
-                b.classList.remove('bg-purple-500', 'text-white', 'border-purple-500');
-                b.classList.add('text-gray-500', 'border-white/10');
-            });
-            btn.classList.add('bg-purple-500', 'text-white', 'border-purple-500');
-            btn.classList.remove('text-gray-500', 'border-white/10');
-            
-            items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
+        // 3. Scroll Reveal Logic
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    anime({
+                        targets: entry.target,
+                        translateY: [30, 0],
+                        opacity: [0, 1],
+                        duration: 1000,
+                        easing: 'easeOutQuad'
+                    });
+                    observer.unobserve(entry.target);
                 }
             });
-        }
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // 4. Parallax Background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.parallax-img');
+            parallax.style.transform = `translateY(${scrolled * 0.4}px) scale(1.2)`;
+        });
     </script>
 </body>
 </html>
